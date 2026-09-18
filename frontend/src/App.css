@@ -1,0 +1,159 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #1e2530;
+}
+
+main {
+    width: 90%;
+    max-width: 750px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid #dde3e9;
+    border-radius: 8px;
+}
+
+h1 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    color: #172033;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bfc7d1;
+    border-radius: 5px;
+    font-size: 15px;
+    background-color: white;
+}
+
+input:focus,
+select:focus {
+    outline: 2px solid #55789d;
+    border-color: transparent;
+}
+
+button {
+    padding: 10px 16px;
+    margin-top: 10px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 5px;
+    background-color: #314a67;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #253a52;
+}
+
+p {
+    line-height: 1.5;
+}
+
+hr {
+    margin: 24px 0;
+    border: 0;
+    border-top: 1px solid #dde3e9;
+}
+
+main > div {
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px solid #dde3e9;
+    border-radius: 6px;
+    background-color: #fafbfc;
+}
+
+main > div p {
+    margin: 6px 0;
+}
+
+@media (max-width: 600px) {
+    main {
+        width: 94%;
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    button {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+.navbar {
+    width: 100%;
+    padding: 12px 5%;
+    background-color: #172033;
+    color: white;
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar strong {
+    justify-self: start;
+}
+
+.navbar div {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.navbar button {
+    margin: 0;
+    padding: 8px 12px;
+    background-color: transparent;
+}
+
+.navbar button:hover {
+    background-color: #314a67;
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .navbar strong {
+        text-align: center;
+    }
+
+    .navbar div {
+        flex-direction: column;
+    }
+
+    .navbar button {
+        width: 100%;
+    }
+}

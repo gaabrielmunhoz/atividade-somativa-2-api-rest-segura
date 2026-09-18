@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "nome": "Gabriel Munhoz de Paiva",
+    "email": "gabriel@email.com",
+    "senha": "$2b$10$DEh7Z2ilqwe12S/ybK808uG.hWTT6jqqYbFXje/SWfWGdrDemZnh6",
+    "perfil": "Administrador"
+  },
+  {
+    "id": 2,
+    "nome": "Operador Teste 2",
+    "email": "operador@email.com",
+    "senha": "$2b$10$0DKDtsh0JAmsZW/xkchkEOMDWa/PsUwpz.Tt4M/8ZlN5dzmVUSo9W",
+    "perfil": "Operador"
+  },
+  {
+    "id": 3,
+    "nome": "Cliente teste 2",
+    "email": "clienteteste@email.com",
+    "senha": "$2b$10$CnhR1KYntZPQYDABwY0glej71Sil02IhV.k9t4cSiVa9TJk7yJd1q",
+    "perfil": "Operador"
+  },
+  {
+    "id": 4,
+    "nome": "Maria Solicitação",
+    "email": "maria.solicitacao@email.com",
+    "senha": "$2b$10$T9k9OSTJkysoTREhOIPVAO573MCNOti7bKgPU/o1kTzH2hbAqXhdu",
+    "perfil": "Cliente"
+  },
+  {
+    "id": 5,
+    "nome": "teste 2",
+    "email": "teste2@email.com",
+    "senha": "$2b$10$ZHOQRACO.qsWSD9lCILjQuOtQzCGe75BJT5xsJaQjsai4nffKF6f.",
+    "perfil": "Cliente"
+  },
+  {
+    "id": 6,
+    "nome": "Solicitação de acesso pelo site",
+    "email": "solicitacaosite@email.com",
+    "senha": "$2b$10$gmIKA3z8GlYl8OJu9TBbwee/YNT6ltg5cY9UZDOrEPpMQiZcSfvb2",
+    "perfil": "Administrador"
+  }
+]
