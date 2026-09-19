@@ -7,6 +7,7 @@ function EditarUsuario() {
     const [email, setEmail]  = useState("")
     const [perfil, setPerfil] = useState("")
     const [mensagem, setMensagem] = useState("")
+    const [autorizado, setAutorizado] = useState(false)
 
     const navigate = useNavigate()
     const {id} = useParams()
@@ -46,13 +47,14 @@ function EditarUsuario() {
                 )
 
                 if (!podeEditar) {
-                    navigate("/usuarios")
+                    navigate("/usuarios", {replace: true})
                     return
                 }
 
                 setNome(dados.nome)
                 setEmail(dados.email)
                 setPerfil(dados.perfil)
+                setAutorizado(true)
             } catch {
                 setMensagem("Não foi possível carregar o usuário.")
             }
@@ -92,6 +94,10 @@ function EditarUsuario() {
         } catch {
             setMensagem("Não foi possível atualizar o usuário.")
         }
+    }
+
+    if (!autorizado) {
+        return null
     }
 
     return(
