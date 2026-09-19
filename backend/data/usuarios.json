@@ -20,5 +20,12 @@
     "senha": "$2b$10$9k/WaqU5FN4bhcrsopLDM.9i0pf1/23hXbqPM93DiOcfY0P7i9KSy",
     "perfil": "Cliente",
     "primeiroAcesso": false
+  },
+  {
+    "id": 4,
+    "nome": "Usuario Operador 2",
+    "email": "usuario@operador2.com",
+    "senha": "$2b$10$S9RJDexS73PObwf8dEeu3O.S16t98UBlSn.bQW8cJkJJW5I5SuYbK",
+    "perfil": "Operador"
   }
 ]
