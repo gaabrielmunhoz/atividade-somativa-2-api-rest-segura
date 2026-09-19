@@ -39,6 +39,17 @@ function EditarUsuario() {
                     return
                 }
 
+                const podeEditar = usuarioLogado?.perfil === "Administrador" || (
+                    usuarioLogado?.perfil === "Operador" && (
+                        usuarioLogado.id === dados.id || dados.perfil == "Cliente"
+                    )
+                )
+
+                if (!podeEditar) {
+                    navigate("/usuarios")
+                    return
+                }
+
                 setNome(dados.nome)
                 setEmail(dados.email)
                 setPerfil(dados.perfil)
@@ -48,7 +59,7 @@ function EditarUsuario() {
         }
 
         buscarUsuario()
-    }, [id, navigate, token])
+    }, [id, navigate, token, usuarioLogado?.id, usuarioLogado?.perfil])
 
     async function salvar(event){
         event.preventDefault()
