@@ -52,7 +52,7 @@ backend/data/solicitacoes.json
 
 ### Estrutura: 
 
-**api-rest-segura-para-gestao-de-usuarios-avaliacao/**\
+**atividade-somativa-2-api-rest-segura/**\
 \
 📁**backend/**
 * 📁**data/**
@@ -106,16 +106,16 @@ Depois de certificar que você já está na pasta, rode os seguintes comandos:
 * ```npm install```
 * ```npm run install:all```
 
-### 2. Configurar as variáveis do ambiente:
+### 2. Configurar as variáveis de ambiente:
 
 Rode no terminal:
 **Windows PowerShell:**
 * ```cd backend```
-* ```echo $null > .env```
+* ```New-Item .env -ItemType File```
 
 **Bash / Linux / Mac**
 * ```cd backend```
-* ```echo $null > .env```
+* ```touch .env```
 
     * Isso irá criar o arquivo ```.env``` na sua máquina.
 
@@ -123,7 +123,7 @@ Rode no terminal:
 - Rode no terminal para criar a sua JWT_SECRET:
 ```node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"```
 
-Após isso, será retornado a chave secreta do seu JWT, copie ela para seguir os próximos passos.
+Após isso, será retornada a chave secreta do JWT. Copie-a para seguir os próximos passos.
 
 * No arquivo ```/backend/.env``` insira:
 ```text
@@ -140,7 +140,7 @@ Volte para a pasta principal do projeto pelo terminal (comando: ```cd ..```) e r
 
 ### Usuários de demonstração:
 
-Para permitir um primeiro acesso, criei uns usuários padrão para facilitar.
+Para facilitar os testes da aplicação, foram criados usuários de demonstração para cada perfil.
 
 Segue login e senha de acordo com cada perfil: 
 
@@ -158,7 +158,8 @@ E-mail: usuario@cliente.com
 Senha: 123456
 ```
 
-Com esses usuários você já tem o livre acesso ao sistema completo, com suas funcionalidades restritas a cada tipo de perfil.
+Com esses usuários é possível testar o sistema de acordo com as permissões atribuídas a cada perfil.
+
 ---
 
 ## Perfis de acesso:
@@ -171,7 +172,7 @@ Utilizei do controle de acesso baseado em perfil (```RBAC```) e existem três ti
 * Pode:
     * Consultar usuários;
     * Cadastrar novos usuários;
-    * Editar novos usuários;
+    * Editar usuários;
     * Alterar perfis de acesso;
     * Excluir usuários;
     * Consultar solicitações de acesso;
@@ -180,7 +181,7 @@ Utilizei do controle de acesso baseado em perfil (```RBAC```) e existem três ti
 * Não pode:
     * Visualizar senha de usuários;
     * Criar senhas para usuários.
-* Quando o próprio administrador cria um novo usuário, é gerado um código para ele compartilhar ao usuário para o primeiro acesso. O novo usuário insere o código e assim ele pode criar uma nova senha. Mantendo assim todas as senhas privadas e criptografadas.
+* Quando o próprio administrador cria um novo usuário, é gerado um código para ele compartilhar ao usuário para o primeiro acesso. O novo usuário insere o código e assim ele pode criar uma nova senha. Dessa forma, as senhas permanecem privadas e são armazenadas apenas como hash.
 
 ### Operador:
 
@@ -214,12 +215,12 @@ Além das regras existentes na API, o frontend também controla quais páginas c
 |---|---|---|---|---|
 |POST|```/login```|Público|Autenticar usuário e gerar JWT|200
 |POST|```/primeiro-acesso```|Público|Definir senha utilizando código de primeiro acesso|200
-|POST|```/solicitacoes```|Público|Criar solicitação de acesso|200
+|POST|```/solicitacoes```|Público|Criar solicitação de acesso|201
 |GET|```/solicitacoes```|Administrador|Listar solicitações pendentes|200
 |POST|```/solicitacoes/:id/aprovar```|Administrador|Aprovar uma solicitação|201
 |DELETE|```/solicitacoes/:id```|Administrador|Recusar uma solicitação|204
 |GET|```/usuarios```|Administrador e Operador|Listar usuários|200
-|GET|```/usuarios/:id```|Administrador e Operador|Consultar usuário específico|200
+|GET|```/usuarios/:id```|Conforme permissão|Consultar usuário específico|200
 |POST|```/usuarios```|Administrador|Cadastrar usuário|201
 |PUT|```/usuarios/:id```|Administrador e operador|Atualizar usuário conforme permissões|200
 |DELETE|```/usuarios/:id```|Administrador|Excluir usuário|204
@@ -235,14 +236,14 @@ A API também pode retornar códigos como:
 
 Utilização do JSON Web Token (JWT) para autenticação.
 
-### FLuxo de login
+### Fluxo de login
 
 O usuário informa: 
 * E-mail
 * Senha
 A aplicação procura o usuário cadastrado e utiliza o ```bcrypt``` para comparar a senha informada com o hash armazenado.
 
-Caso as credenciais estejam corretas, o servidor gera JWT.
+Caso as credenciais estejam corretas, o servidor gera um JWT.
 
 O token contém informações como:
 ```text
@@ -257,22 +258,22 @@ Os campos iat e exp são adicionados pelo próprio JWT e representam, respectiva
 
 Após o login, o frontend envia o token nas requisições protegidas utilizando o cabeçalho: ```Authorization: Bearer TOKEN```.
 O middleware de autenticação utiliza ```jwt.verify``` para verificar a assinatura e a validade do token.
-Caso oo token não seja informado, esteja inválido ou tenha expirado, a API retorna ```401```- não autorizado.
+Caso o token não seja informado, esteja inválido ou tenha expirado, a API retorna ```401```- não autorizado.
 
 ## Tempo de expiração do JWT
 
 O token foi configurado para expirar em 1 hora (JWT_EXPIRES_IN=1h).
 
-A utilização de um token de validade limitada reduz o período em que um tokekn comprometido poderia ser utilizado por terceiros.
+A utilização de um token de validade limitada reduz o período em que um token comprometido poderia ser utilizado por terceiros.
 
 Após a expiração, é necessário realizar uma nova autenticação.
 
 ## Autorização e RBAC
-depois da autenticação, a API utiliza o perfil armazenado no JWT para determinar quais operações o usuário pode realizar.
+Depois da autenticação, a API utiliza o perfil armazenado no JWT para determinar quais operações o usuário pode realizar.
 
 O middleware de autorização recebe os perfis permitidos em cada endpoint.
 
-Por exempplo, uma operação exclusiva de Administradores utiliza ```autorizarPerfis("Administrador")```.
+Por exemplo, uma operação exclusiva de Administradores utiliza ```autorizarPerfis("Administrador")```.
 Uma operação disponível para Administradores e Operadores utiliza ```autorizarPerfis("Administrador", "Operador")```.
 
 Algumas regras mais específicas são verificadas no endpoint.
@@ -292,22 +293,22 @@ Nesse caso, não seria necessário compartilhar diretamente o usuário e a senha
 
 O parceiro seria previamente registrado e receberia credenciais próprias de aplicação.
 
-Em uma integração entre sistemas, poderia ser utilizado o fluxo ```ClientCredentials```.
+Em uma integração entre sistemas, poderia ser utilizado o fluxo ```Client Credentials```.
 
 O processo poderia ocorrer assim:
 
 1. A aplicação parceira solicita autorização ao servidor de autorização.
 2. O servidor valida as credenciais da aplicação parceira.
-3. Se validar, é emitido o ```acces token```.
+3. Se validar, é emitido o ```access token```.
 4. O parceiro envia esse token ao consumir os endpoints autorizados da API.
-5. A Api verifica o token e as permissões concedidas antes de liberar o recurso.
+5. A API verifica o token e as permissões concedidas antes de liberar o recurso.
 
 **Vantagens:**
 - Não compartilhar diretamente senhas de usuários;
 - Permitir delegações de acesso;
 - Limitar permissões utilizando escopos;
 - Permitir revogação individual de acessos;
-- Facilitar  integrações externas;
+- Facilitar integrações externas;
 - Padrão amplamente utilizado em APIs.
 
 ## Análise de segurança
@@ -316,7 +317,7 @@ O processo poderia ocorrer assim:
 #### Risco:
 Caso um token válido seja obtido por uma pessoa não autorizada, ele poderia ser utilizado para acessar a API enquanto permanecer válido.
 #### Mitigações:
-Foi utilizado tokens de com expiração de 1h.
+Os tokens possuem tempo de expiração de 1 hora.
 
 Em ambiente de produção, a comunicação deve ocorrer em HTTPS para impedir a interceptação do token durante a transmissão.
 
@@ -334,20 +335,20 @@ A autenticação é realizada comparando a senha informada com o hash armazenado
 #### Risco:
 Um usuário poderia tentar acessar endpoints ou páginas destinados a outro perfil.
 #### Mitigações:
-Foi utilizado:
+Foram utilizados:
 * Autenticação JWT;
 * Middleware de autorização;
 * Controle de acesso baseado em perfil;
 * Regras adicionais nos endpoints;
 * Proteção de rotas no frontend.
 
-O backend continua sendo responsável pela autorização real das operações. Assim, se alterar manualmente uma URL ou enviar uma requisição diretamente para a API, não é o suficiente para obter uma permissão que o usuário não possui.
+O backend continua sendo responsável pela autorização real das operações. Assim, se alterar manualmente uma URL ou enviar uma requisição diretamente para a API, não é suficiente para obter uma permissão que o usuário não possui.
 
 ### 4. Código de primeiro acesso
 #### Risco:
 Um código de primeiro acesso armazenado em texto puro poderia ser utilizado indevidamente caso os dados fossem expostos.
 #### Mitigação:
-O código é gerado aleatoriamente e o apenas o seu hash é armazenado. Depois que o usuário define a senha, o código é removido e não pode ser reutilizado.
+O código é gerado aleatoriamente e apenas o seu hash é armazenado. Depois que o usuário define a senha, o código é removido e não pode ser reutilizado.
 
 ### Testes realizados
 Durante o desenvolvimento foram realizados testes de:
