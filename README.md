@@ -61,6 +61,7 @@ backend/data/solicitacoes.json
 * 📁**middleware/**
     * ```autenticacao.js```
     * ```autorizacao.js```
+* ```.env.example```
 * ```package.json```
 * ```server.js```
 
@@ -68,29 +69,15 @@ backend/data/solicitacoes.json
 📁**frontend/**
 * 📁**src/**
     * 📁**componentes/**
-        * 📄```Navbar.jsx```
-        * 📄```RotaProtegida.jsx```
     * 📁**paginas/**
-        * 📄```EditarUsuario.jsx```
-        * 📄```Login.jsx```
-        * 📄```MeusDados.jsx```
-        * 📄```NovoUsuario.jsx```
-        * 📄```PrimeiroAcesso.jsx```
-        * 📄```Solicitacoes.jsx```
-        * 📄```SolicitarAcesso.jsx```
-        * 📄```Usuarios.jsx```
-    * 📄```api.js```
-    * 📄```App.css```
-    * 📄```App.jsx```
-    * 📄```main.jsx```
+    * 📄```eslint.config.js```
+    * 📄```index.html```
+    * 📄```package.json```
+    * 📄```vite.config.js```
 
-- 📄```eslint.config.js```
-- 📄```index.html```
-- 📄```package.json```
-- 📄```README.md```
-- 📄```vite.config.js```
 - 📄```LICENSE```
 - 📄```package.json```
+- 📄```package-lock.json```
 - 📄```README.md```
 
 ## Como executar o projeto
@@ -101,7 +88,7 @@ backend/data/solicitacoes.json
 
 ### 1. Instalação:
 
-No terminal, procure pela pasta ```api-rest-segura-para-gestao-de-usuarios-avaliacao/```
+No terminal, procure pela pasta ```atividade-somativa-2-api-rest-segura/```
 Depois de certificar que você já está na pasta, rode os seguintes comandos:
 * ```npm install```
 * ```npm run install:all```
@@ -257,7 +244,7 @@ exp
 Os campos iat e exp são adicionados pelo próprio JWT e representam, respectivamente, o momento de emissão e o momento de expiração do token.
 
 Após o login, o frontend envia o token nas requisições protegidas utilizando o cabeçalho: ```Authorization: Bearer TOKEN```.
-O middleware de autenticação utiliza ```jwt.verify``` para verificar a assinatura e a validade do token.
+O middleware de autenticação utiliza ```jwt.verify()``` para verificar a assinatura e a validade do token.
 Caso o token não seja informado, esteja inválido ou tenha expirado, a API retorna ```401```- não autorizado.
 
 ## Tempo de expiração do JWT
