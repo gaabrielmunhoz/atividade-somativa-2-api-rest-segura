@@ -42,7 +42,7 @@ function EditarUsuario() {
 
                 const podeEditar = usuarioLogado?.perfil === "Administrador" || (
                     usuarioLogado?.perfil === "Operador" && (
-                        usuarioLogado.id === dados.id || dados.perfil == "Cliente"
+                        usuarioLogado.id === dados.id || dados.perfil === "Cliente"
                     )
                 )
 

@@ -1,27 +1,36 @@
 import { Navigate } from "react-router-dom"
 
-function RotaProtegida({children, perfis}){
-    const token = localStorage.getItem("token")
-
+function decodificarToken(token){
     if (!token) {
-        return <Navigate to="/" replace />
+        return null
     }
 
     try {
-        const usuario = JSON.parse(atob(token.split(".")[1]))
-        if (usuario.exp && usuario.exp * 1000 < Date.now()) {
-            localStorage.removeItem("token")
-            return <Navigate to="/" replace />
+        const partes = token.split(".")
+
+        if (partes.length !== 3) {
+            return null
         }
 
-        if (perfis && !perfis.includes(usuario.perfil)) {
-            return <Navigate to="/meus-dados" replace />
-        }
-        return children
+        return JSON.parse(atob(partes[1]))
     } catch {
-        localStorage.removeItem("token")
+        return null
+    }
+}
+
+function RotaProtegida({children, perfis}){
+    const token = localStorage.getItem("token")
+    const usuario = decodificarToken(token)
+
+    if (!usuario) {
         return <Navigate to="/" replace />
     }
+
+    if (perfis && !perfis.includes(usuario.perfil)) {
+        return <Navigate to="/meus-dados" replace />
+    }
+
+    return children
 }
 
 export default RotaProtegida
