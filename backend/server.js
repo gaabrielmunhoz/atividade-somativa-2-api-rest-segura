@@ -77,7 +77,7 @@ app.post("/login", async (req, res) => {
     })
 })
 
-app.post("/primeiro-acesso", async (req, res=> {
+app.post("/primeiro-acesso", async (req, res)=> {
     const {email, codigo, senha} = req.body
 
     if (!email || !codigo || !senha){
@@ -96,7 +96,7 @@ app.post("/primeiro-acesso", async (req, res=> {
         })
     }
 
-    if (!usuario.primeiroAcesso || !usuario.codigoPrimeirioAcesso){
+    if (!usuario.primeiroAcesso || !usuario.codigoPrimeiroAcesso){
         return res.status(409).json({
             mensagem: "O primeiro acesso deste usuário já foi concluído."
         })
@@ -104,7 +104,7 @@ app.post("/primeiro-acesso", async (req, res=> {
 
     const codigoValido = await bcrypt.compare(
         codigo,
-        usuario.codigoPrimeirioAcesso
+        usuario.codigoPrimeiroAcesso
     )
 
     if (!codigoValido){
@@ -115,7 +115,7 @@ app.post("/primeiro-acesso", async (req, res=> {
 
     usuario.senha = await bcrypt.hash(senha,10)
     usuario.primeiroAcesso = false
-    delete usuario.codigoPrimeirioAcesso
+    delete usuario.codigoPrimeiroAcesso
     fs.writeFileSync(
         caminhoUsuarios,
         JSON.stringify(usuarios, null, 2)
@@ -125,7 +125,7 @@ app.post("/primeiro-acesso", async (req, res=> {
         mensagem: "Nova senha definida com sucesso. Agora já pode fazer o login."
     })
 
-}))
+})
 
 app.post("/solicitacoes", async (req,res) => {
     const {nome,email,senha} = req.body
@@ -432,7 +432,7 @@ app.delete("/usuarios/:id", autenticarToken, autorizarPerfis("Administrador"), (
 })
 
 app.post("/usuarios", autenticarToken, autorizarPerfis("Administrador"), async (req, res) => {
-    const {nome, email, senha, perfil} = req.body
+    const {nome, email, perfil} = req.body
 
     if (!nome || !email || !perfil) {
         return res.status(400).json({
@@ -465,9 +465,9 @@ app.post("/usuarios", autenticarToken, autorizarPerfis("Administrador"), async (
     ? Math.max(...usuarios.map(usuario => usuario.id)) + 1
     : 1
 
-    const codigoPrimeirioAcesso = crypto.randomBytes(4).toString("hex").toUpperCase()
+    const codigoPrimeiroAcesso = crypto.randomBytes(4).toString("hex").toUpperCase()
 
-    const codigoHash = await bcrypt.hash(codigoPrimeirioAcesso,10)
+    const codigoHash = await bcrypt.hash(codigoPrimeiroAcesso,10)
 
     const novoUsuario = {
         id: novoId,
@@ -476,7 +476,7 @@ app.post("/usuarios", autenticarToken, autorizarPerfis("Administrador"), async (
         senha: null,
         perfil,
         primeiroAcesso: true,
-        codigoPrimeirioAcesso: codigoHash
+        codigoPrimeiroAcesso: codigoHash
     }
 
     usuarios.push(novoUsuario)
@@ -492,7 +492,7 @@ app.post("/usuarios", autenticarToken, autorizarPerfis("Administrador"), async (
         email: novoUsuario.email,
         perfil: novoUsuario.perfil,
         primeiroAcesso: true,
-        codigoPrimeirioAcesso
+        codigoPrimeiroAcesso
     })
 })
 
