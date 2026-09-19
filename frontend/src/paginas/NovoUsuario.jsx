@@ -88,7 +88,7 @@ function NovoUsuario() {
                 <div>
                     <p><strong>Código de primeiro acesso:</strong></p>
                     <p>{codigo}</p>
-                    <p>Informe este código ao usuário para que ele possa definir a prórpia senha.</p>
+                    <p>Informe este código ao usuário para que ele possa definir a própria senha.</p>
                 </div>
             )}
 
