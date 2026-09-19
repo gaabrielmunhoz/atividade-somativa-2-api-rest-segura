@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken")
 const autenticarToken = require("./middleware/autenticacao")
 const autorizarPerfis = require("./middleware/autorizacao")
 const cors = require("cors")
+const crypto = require("crypto")
 
 require("dotenv").config({
     path: path.join(__dirname, ".env")
@@ -44,6 +45,12 @@ app.post("/login", async (req, res) => {
         })
     }
 
+    if (usuario.primeiroAcesso === true || !usuario.senha){
+        return res.status(403).json({
+            mensagem: "Primeiro acesso pendente. Defina a sua senha antes de entrar."
+        })
+    }
+
     const senhaValida = await bcrypt.compare(senha, usuario.senha)
 
     if (!senhaValida) {
@@ -70,9 +77,55 @@ app.post("/login", async (req, res) => {
     })
 })
 
-app.get("/", (req, res) => {
-  res.json({ mensagem: "API REST Segura funcionando!" })
-});
+app.post("/primeiro-acesso", async (req, res=> {
+    const {email, codigo, senha} = req.body
+
+    if (!email || !codigo || !senha){
+        return res.status(400).json({
+            mensagem: "E-mail, código e senha são obrigatórios."
+        })
+    }
+
+    const dados = fs.readFileSync(caminhoUsuarios, "utf-8")
+    const usuarios = JSON.parse(dados)
+    const usuario = usuarios.find(usuario=> usuario.email === email)
+
+    if (!usuario) {
+        return res.status(404).json({
+            mensagem: "Usuário não encontrado."
+        })
+    }
+
+    if (!usuario.primeiroAcesso || !usuario.codigoPrimeirioAcesso){
+        return res.status(409).json({
+            mensagem: "O primeiro acesso deste usuário já foi concluído."
+        })
+    }
+
+    const codigoValido = await bcrypt.compare(
+        codigo,
+        usuario.codigoPrimeirioAcesso
+    )
+
+    if (!codigoValido){
+        return res.status(401).json({
+            mensagem: "Código inválido."
+        })
+    }
+
+    usuario.senha = await bcrypt.hash(senha,10)
+    usuario.primeiroAcesso = false
+    delete usuario.codigoPrimeirioAcesso
+    fs.writeFileSync(
+        caminhoUsuarios,
+        JSON.stringify(usuarios, null, 2)
+    )
+
+    res.status(200).json({
+        mensagem: "Nova senha definida com sucesso. Agora já pode fazer o login."
+    })
+
+}))
 
 app.post("/solicitacoes", async (req,res) => {
     const {nome,email,senha} = req.body
@@ -381,7 +434,7 @@ app.delete("/usuarios/:id", autenticarToken, autorizarPerfis("Administrador"), (
 app.post("/usuarios", autenticarToken, autorizarPerfis("Administrador"), async (req, res) => {
     const {nome, email, senha, perfil} = req.body
 
-    if (!nome || !email || !senha || !perfil) {
+    if (!nome || !email || !perfil) {
         return res.status(400).json({
             mensagem: "Todos os campos são obrigatórios."
         })
@@ -408,18 +461,22 @@ app.post("/usuarios", autenticarToken, autorizarPerfis("Administrador"), async (
         })
     }
 
-    const senhaHash = await bcrypt.hash(senha,10)
-
     const novoId = usuarios.length > 0
     ? Math.max(...usuarios.map(usuario => usuario.id)) + 1
     : 1
+
+    const codigoPrimeirioAcesso = crypto.randomBytes(4).toString("hex").toUpperCase()
+
+    const codigoHash = await bcrypt.hash(codigoPrimeirioAcesso,10)
 
     const novoUsuario = {
         id: novoId,
         nome,
         email,
-        senha: senhaHash,
-        perfil
+        senha: null,
+        perfil,
+        primeiroAcesso: true,
+        codigoPrimeirioAcesso: codigoHash
     }
 
     usuarios.push(novoUsuario)
@@ -433,7 +490,9 @@ app.post("/usuarios", autenticarToken, autorizarPerfis("Administrador"), async (
         id: novoUsuario.id,
         nome: novoUsuario.nome,
         email: novoUsuario.email,
-        perfil: novoUsuario.perfil
+        perfil: novoUsuario.perfil,
+        primeiroAcesso: true,
+        codigoPrimeirioAcesso
     })
 })
 
