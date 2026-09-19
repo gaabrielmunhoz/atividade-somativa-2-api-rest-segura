@@ -53,6 +53,8 @@ function Login(){
             {mensagem && (<p>{mensagem}</p>)}
 
             <button type="button" onClick={()=>navigate("/solicitar-acesso")}>Solicitar acesso</button>
+
+            <button type="button" onClick={()=> navigate("/primeiro-acesso")}>Primeiro acesso</button>
         </main>
     )
 }

@@ -102,6 +102,11 @@ function Usuarios(){
     return (
         <main>
             <h1>Usuários</h1>
+
+            {usuarioLogado.perfil === "Administrador" && (
+                <button type="button" onClick={() => navigate("/usuarios/novo")}>Novo Usuário</button>
+            )}
+
             <button type="button" onClick={()=> navigate("/meus-dados")}>Voltar</button>
             {mensagem && (<p>{mensagem}</p>)}
             <br />

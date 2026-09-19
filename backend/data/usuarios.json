@@ -40,5 +40,13 @@
     "email": "solicitacaosite@email.com",
     "senha": "$2b$10$gmIKA3z8GlYl8OJu9TBbwee/YNT6ltg5cY9UZDOrEPpMQiZcSfvb2",
     "perfil": "Administrador"
+  },
+  {
+    "id": 7,
+    "nome": "usuário tela teste",
+    "email": "tela@teste",
+    "senha": "$2b$10$zxx3Vw8Bg8MqJ.J3oXjHWObr22ZvugTOAcnyse8z7qmg8vuzH.D3G",
+    "perfil": "Cliente",
+    "primeiroAcesso": false
   }
 ]

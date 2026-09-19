@@ -5,7 +5,7 @@ function Navbar(){
     const location = useLocation()
     const token = localStorage.getItem("token")
 
-    if (!token || location.pathname === "/" || location.pathname === "/solicitar-acesso"){
+    if (!token || location.pathname === "/" || location.pathname === "/solicitar-acesso" || location.pathname === "/primeiro-acesso"){
         return null
     }
 
