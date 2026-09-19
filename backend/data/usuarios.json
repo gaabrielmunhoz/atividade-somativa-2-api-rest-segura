@@ -10,22 +10,14 @@
     "id": 2,
     "nome": "Usuário Operador",
     "email": "usuario@operador.com",
-    "senha": "$2b$10$/aqc7HilinJEd.nCAdjBIOY5ET7sL..AazZh7TkAUsyE4urDG5AS2",
+    "senha": "$2b$10$3PXve3zpJzwq955osDOM7en0HdJsNm8SdELKjY2cUwZwxQkGBD8x.",
     "perfil": "Operador"
   },
   {
     "id": 3,
     "nome": "Usuário Cliente",
     "email": "usuario@cliente.com",
-    "senha": "$2b$10$9k/WaqU5FN4bhcrsopLDM.9i0pf1/23hXbqPM93DiOcfY0P7i9KSy",
-    "perfil": "Cliente",
-    "primeiroAcesso": false
-  },
-  {
-    "id": 4,
-    "nome": "Usuario Operador 2",
-    "email": "usuario@operador2.com",
-    "senha": "$2b$10$S9RJDexS73PObwf8dEeu3O.S16t98UBlSn.bQW8cJkJJW5I5SuYbK",
-    "perfil": "Operador"
+    "senha": "$2b$10$ZimUycRTUYe.iiluHYZ7aOV92T47N7RbdexCgv5B2953t9MxOWLP6",
+    "perfil": "Cliente"
   }
 ]
